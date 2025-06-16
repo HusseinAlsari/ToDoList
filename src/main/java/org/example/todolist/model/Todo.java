@@ -1,28 +1,24 @@
 package org.example.todolist.model;
 
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+@Entity
+@Table(name = "Todo")
 public class Todo {
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private int id;
     private String LName;
-    private Task task;
+    @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL,orphanRemoval = true) //many tasks to one todo
+    @JoinColumn(name = "task_tId")
+    private List<Task> taska;
 
-    public Todo(String LName, Task task) {
-        this.LName = LName;
-        this.task = task;
-    }
+    public Todo() {
 
-    public String getLName() {
-        return LName;
-    }
-
-
-    public Task getTasks() {
-        return task;
-    }
-
-    public void setLName(String LName) {
-        this.LName = LName;
-    }
-
-    public void setTasks(Task task) {
-        this.task = task;
     }
 }
