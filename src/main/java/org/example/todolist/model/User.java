@@ -7,14 +7,21 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "User")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
-    private String uName;
-    private String uPassword;
-    private String uEmail;
+    private String username;
+    private String password;
+    private String email;
+
+    public User(int id, String username, String password, String email) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 
     public User() {
 

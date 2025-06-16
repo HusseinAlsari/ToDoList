@@ -5,16 +5,16 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Task")
+@Table(name = "task")
 public class Task {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private int tId;
-   private String tName;
-   private String tDescription;
-   private String tPriority;
+   private String title;
+   private String description;
+   private String priority;
     @ManyToOne
-    @JoinColumn(name = "Todo_id")
+    @JoinColumn(name = "todo_id")
     private Todo todo;
 
     public Task() {

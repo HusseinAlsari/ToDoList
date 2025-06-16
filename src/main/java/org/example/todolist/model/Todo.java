@@ -8,15 +8,14 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "Todo")
+@Table(name = "todo")
 public class Todo {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
-    private String LName;
+    private String name;
     @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL,orphanRemoval = true) //many tasks to one todo
-    @JoinColumn(name = "task_tId")
-    private List<Task> taska;
+    private List<Task> tasks;
 
     public Todo() {
 
