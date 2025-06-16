@@ -1,6 +1,15 @@
 package org.example.todolist.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name = "Task")
 public class Task {
+    @Id
    private int tId;
    private String tName;
    private String tDescription;
@@ -11,6 +20,10 @@ public class Task {
         this.tName = tName;
         this.tDescription = tDescription;
         this.tPriority = tPriority;
+    }
+
+    public Task() {
+
     }
 
     public int gettId() {
