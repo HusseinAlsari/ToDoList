@@ -11,7 +11,7 @@ import java.util.List;
 @RepositoryRestResource
 public interface TodoRepo extends JpaRepository<Todo, Integer> {
 //    public List<Task> findByTodoId(@Param("id") int id);
-    public Todo findById(int id);
+    Todo findById(int id);
     void deleteTodoByName(String name);
 
 }

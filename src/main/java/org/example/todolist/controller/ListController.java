@@ -7,12 +7,9 @@ import org.example.todolist.model.User;
 import org.example.todolist.repo.TaskRepo;
 import org.example.todolist.repo.TodoRepo;
 import org.example.todolist.repo.UserRepo;
-import org.hibernate.annotations.DialectOverride;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class ListController {
@@ -27,16 +24,6 @@ public class ListController {
         this.todoRepo = todoRepo;
     }
 
-//    @GetMapping("/")
-//    public String listPage(){
-//        return "listPage";
-//    }
-
-//    @PostMapping("/task")
-//    public Task createList(@RequestBody Task todo) {
-//        // Save the list to the database
-//        return todo;
-//    }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// USER MAPPINGS
     //user controllers
@@ -68,15 +55,18 @@ public class ListController {
 
 /// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// TODOList MAPPINGS
+/// create a new list
     @PostMapping("/todo/add")
     public void addTodo(@RequestBody Todo todo){
         todoRepo.save(todo);
     }
+    // shows all TodosList
     @GetMapping("/todo")
     public List<Todo> findAllTodo(){
         return todoRepo.findAll();
     }
 
+    // delete TodoList by name
     @Transactional
     @DeleteMapping("/todo/delete/{name}")
     public void deleteTodo(@PathVariable String name){
