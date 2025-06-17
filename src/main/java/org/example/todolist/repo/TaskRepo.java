@@ -6,4 +6,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource
 public interface TaskRepo extends JpaRepository<Task, Integer> {
+    public Task findById(int tid);
+    void deleteTaskByTitle(String title);
 }

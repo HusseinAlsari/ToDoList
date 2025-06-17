@@ -1,14 +1,18 @@
 package org.example.todolist.controller;
 
+import jakarta.transaction.Transactional;
 import org.example.todolist.model.Task;
 import org.example.todolist.model.Todo;
 import org.example.todolist.model.User;
 import org.example.todolist.repo.TaskRepo;
 import org.example.todolist.repo.TodoRepo;
 import org.example.todolist.repo.UserRepo;
+import org.hibernate.annotations.DialectOverride;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ListController {
@@ -33,6 +37,8 @@ public class ListController {
 //        // Save the list to the database
 //        return todo;
 //    }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// USER MAPPINGS
     //user controllers
     //add user
     @PostMapping("/user/add")
@@ -44,7 +50,14 @@ public class ListController {
     public List<User> findAllUsers(){
         return userRepo.findAll();
     }
-    //get user
+
+    //delete user by name
+    @Transactional
+    @DeleteMapping("/user/delete/{username}")
+    public void deleteUser(@PathVariable String username){
+        userRepo.deleteUserByUsername(username);
+    }
+    //get a user by name
 //    @GetMapping("/user/{username}")
 //    public ResponseEntity<User> getUser(@PathVariable("uName") String uName){
 //        return userRepo.fin
@@ -53,7 +66,8 @@ public class ListController {
 
 
 
-
+/// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// TODOList MAPPINGS
     @PostMapping("/todo/add")
     public void addTodo(@RequestBody Todo todo){
         todoRepo.save(todo);
@@ -63,15 +77,38 @@ public class ListController {
         return todoRepo.findAll();
     }
 
+    @Transactional
+    @DeleteMapping("/todo/delete/{name}")
+    public void deleteTodo(@PathVariable String name){
+        todoRepo.deleteTodoByName(name);
+    }
 
 
+
+    /// ///////////////////////////////////////////////////////////////////////////////////////
+    /// TASK MAPPINGS
+    //send a new task
     @PostMapping("/task/add")
     public void addTask(@RequestBody Task task){
         taskRepo.save(task);
     }
 
+    //display all tasks
     @GetMapping("/task")
     public List<Task> findAllTask(){
         return taskRepo.findAll();
     }
+
+    //delete task by title
+    @Transactional
+    @DeleteMapping("/task/delete/{title}")
+    public void deleteTask(@PathVariable String title){
+    taskRepo.deleteTaskByTitle(title);
+    }
+    //edit a task
+//    @PutMapping("/task/update{tid}")
+//    public ResponseEntity<Task> updateTask(@RequestBody Task task, @PathVariable int tid){
+//        Task task1 = taskRepo.update(id, updateItem);
+//        return ResponseEntity.ok(task1);
+//    }
 }
