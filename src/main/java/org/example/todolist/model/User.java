@@ -2,8 +2,6 @@ package org.example.todolist.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.UUID;
-
 
 @Data
 @Entity

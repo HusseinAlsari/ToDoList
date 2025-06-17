@@ -9,7 +9,7 @@ import lombok.Data;
 public class Task {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private int tId;
+   private int tid;
    private String title;
    private String description;
    private String priority;

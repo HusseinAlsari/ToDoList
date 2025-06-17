@@ -6,8 +6,9 @@ import org.example.todolist.model.User;
 import org.example.todolist.repo.TaskRepo;
 import org.example.todolist.repo.TodoRepo;
 import org.example.todolist.repo.UserRepo;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class ListController {
@@ -22,10 +23,10 @@ public class ListController {
         this.todoRepo = todoRepo;
     }
 
-    @GetMapping("/")
-    public String listPage(){
-        return "listPage";
-    }
+//    @GetMapping("/")
+//    public String listPage(){
+//        return "listPage";
+//    }
 
 //    @PostMapping("/task")
 //    public Task createList(@RequestBody Task todo) {
@@ -34,9 +35,14 @@ public class ListController {
 //    }
     //user controllers
     //add user
-    @PostMapping("/user")
+    @PostMapping("/user/add")
     public void addUser(@RequestBody User user){
         userRepo.save(user);
+    }
+
+    @GetMapping("/user")
+    public List<User> findAllUsers(){
+        return userRepo.findAll();
     }
     //get user
 //    @GetMapping("/user/{username}")
@@ -48,13 +54,24 @@ public class ListController {
 
 
 
-    @PostMapping("/addtodo")
+    @PostMapping("/todo/add")
     public void addTodo(@RequestBody Todo todo){
         todoRepo.save(todo);
     }
-    @PostMapping("/addtask")
+    @GetMapping("/todo")
+    public List<Todo> findAllTodo(){
+        return todoRepo.findAll();
+    }
+
+
+
+    @PostMapping("/task/add")
     public void addTask(@RequestBody Task task){
         taskRepo.save(task);
     }
 
+    @GetMapping("/task")
+    public List<Task> findAllTask(){
+        return taskRepo.findAll();
+    }
 }
