@@ -3,37 +3,41 @@ package org.example.todolist.controller;
 import jakarta.transaction.Transactional;
 import org.example.todolist.model.User;
 import org.example.todolist.repo.UserRepo;
+import org.example.todolist.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
-
-    private final UserRepo userRepo;
-
-    public UserController(UserRepo userRepo) {
-        this.userRepo = userRepo;
+    //Now to use the service call it insted of the Repo
+    //private final UserRepo userRepo;
+    private final UserService userService;
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// USER MAPPINGS
     //user controllers
     //add user
-    @PostMapping("/user/add")
+    @PostMapping("/add")
     public void addUser(@RequestBody User user){
-        userRepo.save(user);
+        userService.saveUser(user);
     }
 
-    @GetMapping("/user")
+    @GetMapping("/")
     public List<User> findAllUsers(){
-        return userRepo.findAll();
+        return userService.findAllUsers();
     }
 
     //delete user by name
     @Transactional
-    @DeleteMapping("/user/delete/{username}")
+    @DeleteMapping("/delete/{username}")
     public void deleteUser(@PathVariable String username){
-        userRepo.deleteUserByUsername(username);
+        userService.deleteUserByUsername(username);
     }
 
     //@PutMapping

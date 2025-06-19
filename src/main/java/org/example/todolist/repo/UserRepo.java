@@ -9,7 +9,6 @@ import java.util.Optional;
 @RepositoryRestResource
 public interface UserRepo extends JpaRepository<User, Integer> {
     User findUsersByUsername(String username);
-
     boolean existsByUsername(String username);
     User findByUsername(String username);
     public void deleteUserByUsername(String username);

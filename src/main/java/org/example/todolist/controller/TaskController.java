@@ -3,6 +3,8 @@ package org.example.todolist.controller;
 import jakarta.transaction.Transactional;
 import org.example.todolist.model.Task;
 import org.example.todolist.repo.TaskRepo;
+import org.example.todolist.service.TaskService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,41 +12,46 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/task")
 public class TaskController {
-    private final TaskRepo taskRepo;
-
-    public TaskController(TaskRepo taskRepo) {
-        this.taskRepo = taskRepo;
+//    private final TaskRepo taskRepo;
+//
+//    public TaskController(TaskRepo taskRepo) {
+//        this.taskRepo = taskRepo;
+//    }
+    private TaskService taskService;
+    @Autowired
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
     }
-
     /// ///////////////////////////////////////////////////////////////////////////////////////
     /// TASK MAPPINGS
     //send a new task
-    @PostMapping("/task/add")
+    @PostMapping("/add")
     public void addTask(@RequestBody Task task){
-        taskRepo.save(task);
+        taskService.save(task);
     }
 
     //display all tasks
-    @GetMapping("/task")
+    @GetMapping("/")
     public List<Task> findAllTask(){
-        return taskRepo.findAll();
+        return taskService.findAll();
     }
 
     //delete task by title
     @Transactional
-    @DeleteMapping("/task/delete/{title}")
+    @DeleteMapping("/delete/{title}")
     public void deleteTask(@PathVariable String title){
-        taskRepo.deleteTaskByTitle(title);
+        taskService.deleteTaskByTitle(title);
     }
     //update a task
-    @PutMapping("/task/update/{tid}")
+    @PutMapping("/update/{tid}")
     public ResponseEntity<Task> updateTask(@PathVariable int tid, @RequestBody Task task){
-        return taskRepo.findById(tid).map(oldTask ->{
+        return taskService.findById(tid).map(oldTask ->{
                     oldTask.setTitle(task.getTitle());
                     oldTask.setDescription(task.getDescription());
                     oldTask.setPriority(task.getPriority());
-                    return ResponseEntity.ok(taskRepo.save(oldTask));
+                    return ResponseEntity.ok(taskService.save(oldTask));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
