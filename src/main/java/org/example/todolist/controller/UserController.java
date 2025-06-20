@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/user")
 public class UserController {
     //Now to use the service call it insted of the Repo
     //private final UserRepo userRepo;
@@ -23,7 +23,7 @@ public class UserController {
     /// USER MAPPINGS
     //user controllers
     //add user
-    @PostMapping("/add")
+    @PostMapping("/")
     public void addUser(@RequestBody User user){
         userService.saveUser(user);
     }

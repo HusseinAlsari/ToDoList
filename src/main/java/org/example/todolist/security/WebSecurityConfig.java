@@ -12,6 +12,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+
 @Configuration
 public class WebSecurityConfig {
     @Autowired
@@ -32,6 +38,22 @@ public class WebSecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    //cors config for the frontend
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000", "http://localhost:3001"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE","OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Updated configuration for Spring Security 6.x
@@ -46,12 +68,31 @@ public class WebSecurityConfig {
                 )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                //.requestMatchers("/api/auth/**", "/api/test/all").permitAll() // Use 'requestMatchers' instead of 'antMatchers'
-                                .anyRequest().permitAll()
-                                //authenticated()
+                                .requestMatchers("/api/auth/**", "/api/test/all").permitAll() // Use 'requestMatchers' instead of 'antMatchers'
+                                .anyRequest().authenticated()
                 );
         // Add the JWT Token filter before the UsernamePasswordAuthenticationFilter
-       //disabled for testing  http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        // Updated configuration for Spring Security 6.x
+//        http
+//                .csrf(csrf -> csrf.disable()) // Disable CSRF
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))                .exceptionHandling(exceptionHandling ->
+//                        exceptionHandling.authenticationEntryPoint(unauthorizedHandler)
+//                )
+//                .sessionManagement(sessionManagement ->
+//                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                )
+//                .authorizeHttpRequests(authorizeRequests ->
+//                        authorizeRequests
+//                                .requestMatchers("/api/v1/auth/**", "/api/test/all").permitAll() // Use 'requestMatchers' instead of 'antMatchers'
+//                                .anyRequest().authenticated()
+//                );
+//        // Add the JWT Token filter before the UsernamePasswordAuthenticationFilter
+//        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+//        return http.build();
+//    }
+

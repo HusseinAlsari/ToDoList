@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/todo")
+@RequestMapping("/api/v1/todo")
 public class TodoController {
 
 //    private final TodoRepo todoRepo;
@@ -24,7 +24,7 @@ public class TodoController {
 
     /// TODOList MAPPINGS
     /// create a new list
-    @PostMapping("/add")
+    @PostMapping("/")
     public void addTodo(@RequestBody Todo todo) {
         todoService.save(todo);
     }

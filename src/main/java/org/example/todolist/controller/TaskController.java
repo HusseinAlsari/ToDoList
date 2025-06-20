@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/api/v1/task")
 public class TaskController {
 //    private final TaskRepo taskRepo;
 //
@@ -27,7 +27,7 @@ public class TaskController {
     /// ///////////////////////////////////////////////////////////////////////////////////////
     /// TASK MAPPINGS
     //send a new task
-    @PostMapping("/add")
+    @PostMapping("/")
     public void addTask(@RequestBody Task task){
         taskService.save(task);
     }

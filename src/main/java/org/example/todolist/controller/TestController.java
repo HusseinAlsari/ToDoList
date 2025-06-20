@@ -2,7 +2,7 @@ package org.example.todolist.controller;
 
 import org.springframework.web.bind.annotation.*;
 @RestController
-@RequestMapping("/api/test")
+@RequestMapping("/api/v1/test")
 public class TestController {
     @GetMapping("/all")
     public String allAccess() {
