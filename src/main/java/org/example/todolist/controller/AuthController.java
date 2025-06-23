@@ -36,11 +36,11 @@ public class AuthController {
         if (userRepo.existsByUsername(user.getUsername())) {
             return "Error: Username is already taken!";
         }
-        // Create new user's account
+        //create a new user with an encoded password
         User newUser = new User(
-                null,
                 user.getUsername(),
-                encoder.encode(user.getPassword())
+                encoder.encode(user.getPassword()),
+                user.getEmail()
         );
         userRepo.save(newUser);
         return "User registered successfully!";

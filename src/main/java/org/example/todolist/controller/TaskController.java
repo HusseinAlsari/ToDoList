@@ -1,15 +1,15 @@
 package org.example.todolist.controller;
 
 import jakarta.transaction.Transactional;
+import org.example.todolist.dto.TaskReqDto;
 import org.example.todolist.model.Task;
-import org.example.todolist.repo.TaskRepo;
+import org.example.todolist.model.Todo;
 import org.example.todolist.service.TaskService;
+import org.example.todolist.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/task")
@@ -20,16 +20,38 @@ public class TaskController {
 //        this.taskRepo = taskRepo;
 //    }
     private TaskService taskService;
+    private TodoService todoService;
+
     @Autowired
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, TodoService todoService) {
         this.taskService = taskService;
+        this.todoService = todoService;
     }
     /// ///////////////////////////////////////////////////////////////////////////////////////
     /// TASK MAPPINGS
     //send a new task
     @PostMapping("/")
-    public void addTask(@RequestBody Task task){
-        taskService.save(task);
+    public ResponseEntity<?> addTask(@RequestBody TaskReqDto taskReqDto){
+        try {
+            Task task = taskService.convertToEntity(taskReqDto);
+            //if the task has a todo reference, ensure it exists
+            if (task.getTodo() != null && task.getTodo().getId() > 0) {
+                int todoId = task.getTodo().getId();
+                //find the todo in the database
+                Todo todo = todoService.findById(todoId);
+
+                if (todo != null) {
+                    task.setTodo(todo);
+                } else {
+                    return ResponseEntity.status(404).body("Todo with ID " + todoId + " not found");
+                }
+            }
+            //save the task
+            Task savedTask = taskService.save(task);
+            return ResponseEntity.ok(savedTask);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error saving task: " + e.getMessage());
+        }
     }
 
     //display all tasks

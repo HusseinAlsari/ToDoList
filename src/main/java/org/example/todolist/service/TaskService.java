@@ -2,6 +2,7 @@ package org.example.todolist.service;
 
 import org.example.todolist.dto.TaskReqDto;
 import org.example.todolist.model.Task;
+import org.example.todolist.model.Todo;
 import org.example.todolist.repo.TaskRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.Optional;
 @Service
 public class TaskService {
     private TaskRepo taskRepo;
-    @Autowired
+
     public TaskService(TaskRepo taskRepo) {
         this.taskRepo = taskRepo;
     }
@@ -43,5 +44,20 @@ public class TaskService {
 
     public void deleteTaskByTitle(String title) {
         taskRepo.deleteTaskByTitle(title);
+    }
+
+    public Task convertToEntity(TaskReqDto taskReqDto) {
+        Task task = new Task();
+        task.setTitle(taskReqDto.getTitle());
+        task.setDescription(taskReqDto.getDescription());
+        task.setPriority(taskReqDto.getPriority());
+
+        if (taskReqDto.getTodoId() != null) {
+            Todo todo = new Todo();
+            todo.setId(taskReqDto.getTodoId());
+            task.setTodo(todo);
+        }
+
+        return task;
     }
 }

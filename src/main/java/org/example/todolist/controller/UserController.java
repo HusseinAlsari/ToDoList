@@ -11,8 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
-    //Now to use the service call it insted of the Repo
-    //private final UserRepo userRepo;
     private final UserService userService;
     @Autowired
     public UserController(UserService userService) {

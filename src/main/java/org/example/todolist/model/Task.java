@@ -13,8 +13,8 @@ public class Task {
    private String title;
    private String description;
    private String priority;
-    @ManyToOne
-    @JoinColumn(name = "todo_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "todo_id", nullable = true)
     private Todo todo;
 
     public Task() {

@@ -18,6 +18,10 @@ public class User {
     private String password;
     private String email;
 
-    public User(Object o, String username, String encode) {
+
+    public User(String username, String password,String email) {
+        this.username = username;
+        this.password=password;
+        this.email=email;
     }
 }
