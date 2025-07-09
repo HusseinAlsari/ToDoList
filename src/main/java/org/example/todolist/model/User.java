@@ -2,8 +2,7 @@ package org.example.todolist.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter
-@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

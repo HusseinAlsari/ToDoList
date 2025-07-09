@@ -34,12 +34,9 @@ public class TaskController {
     public ResponseEntity<?> addTask(@RequestBody TaskReqDto taskReqDto){
         try {
             Task task = taskService.convertToEntity(taskReqDto);
-            //if the task has a todo reference, ensure it exists
             if (task.getTodo() != null && task.getTodo().getId() > 0) {
                 int todoId = task.getTodo().getId();
-                //find the todo in the database
                 Todo todo = todoService.findById(todoId);
-
                 if (todo != null) {
                     task.setTodo(todo);
                 } else {
